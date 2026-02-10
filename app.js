@@ -330,6 +330,11 @@ const DOM = {
     contentPrompt: document.getElementById('contentPrompt'),
     resetContentPromptBtn: document.getElementById('resetContentPromptBtn'),
 
+    // Project Actions
+    saveProjectBtn: document.getElementById('saveProjectBtn'),
+    loadProjectBtn: document.getElementById('loadProjectBtn'),
+    loadProjectInput: document.getElementById('loadProjectInput'),
+
     // Node 3
     processingStatus: document.getElementById('processingStatus'),
     statusDetail: document.getElementById('statusDetail'),
@@ -480,6 +485,11 @@ function initEventListeners() {
     DOM.serpTitleInput.addEventListener('input', updateSerpPreview);
     DOM.serpDescInput.addEventListener('input', updateSerpPreview);
     DOM.serpUrlInput.addEventListener('input', updateSerpPreview);
+
+    // Project Actions
+    DOM.saveProjectBtn.addEventListener('click', saveProject);
+    DOM.loadProjectBtn.addEventListener('click', () => DOM.loadProjectInput.click());
+    DOM.loadProjectInput.addEventListener('change', loadProject);
 }
 
 // ============================================
@@ -1758,6 +1768,86 @@ function getAuditIcon(status) {
     } else {
         return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
     }
+}
+
+// ============================================
+// Save/Load Project Functions
+// ============================================
+
+function saveProject() {
+    if (appState.keywordsData.length === 0 && appState.processedResults.length === 0) {
+        alert('Chưa có dữ liệu để lưu!');
+        return;
+    }
+
+    const projectData = {
+        version: '1.0',
+        timestamp: new Date().toISOString(),
+        keywordsData: appState.keywordsData,
+        processedResults: appState.processedResults,
+        currentStep: appState.currentStep
+    };
+
+    const dataStr = JSON.stringify(projectData, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    const now = new Date();
+    const dateStr = `${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}`;
+    const filename = `seo-project-${dateStr}.json`;
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+function loadProject(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        try {
+            const data = JSON.parse(e.target.result);
+
+            // Basic validation
+            if (!data.keywordsData || !Array.isArray(data.keywordsData)) {
+                throw new Error('File dự án không hợp lệ (Thiếu keywordsData)');
+            }
+
+            // Restore State
+            appState.keywordsData = data.keywordsData;
+            appState.processedResults = data.processedResults || [];
+
+            // Restore UI
+            if (appState.keywordsData.length > 0) {
+                renderKeywordTable();
+                updateStats();
+                switchStep(2);
+            }
+
+            if (appState.processedResults.length > 0) {
+                displayResults();
+                switchStep(3);
+            } else if (appState.keywordsData.length > 0) {
+                // Stick to step 2 if only keywords
+                switchStep(2);
+            }
+
+            alert('Đã tải dự án thành công!');
+        } catch (error) {
+            console.error(error);
+            alert('Lỗi khi đọc file dự án: ' + error.message);
+        }
+
+        // Reset input
+        event.target.value = '';
+    };
+    reader.readAsText(file);
 }
 
 function switchTab(tabName) {

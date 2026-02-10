@@ -37,6 +37,25 @@
                             d="M12 1v4m0 14v4M4.22 4.22l2.83 2.83m9.9 9.9l2.83 2.83M1 12h4m14 0h4M4.22 19.78l2.83-2.83m9.9-9.9l2.83-2.83" />
                     </svg>
                 </button>
+                <div class="project-actions">
+                    <input type="file" id="loadProjectInput" accept=".json" style="display: none;">
+                    <button class="btn-outline-sm" id="saveProjectBtn" title="Lưu dự án hiện tại (.json)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                            <polyline points="7 3 7 8 15 8"></polyline>
+                        </svg>
+                        Save
+                    </button>
+                    <button class="btn-outline-sm" id="loadProjectBtn" title="Mở dự án đã lưu (.json)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Load
+                    </button>
+                </div>
                 <button class="btn-icon" id="themeToggle" title="Đổi giao diện">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-sun">
                         <circle cx="12" cy="12" r="5" />
