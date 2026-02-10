@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Content Planner - AI Powered Keyword Strategy</title>
+    <meta name="description"
+        content="Công cụ lập kế hoạch SEO với AI - Tạo từ khóa, nội dung và xuất Google Sheets tự động">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                        <path d="M2 17l10 5 10-5" />
+                        <path d="M2 12l10 5 10-5" />
+                    </svg>
+                </div>
+                <span class="logo-text">SEO Content Planner</span>
+            </div>
+            <div class="header-actions">
+                <button class="btn-icon" id="settingsBtn" title="Cài đặt API">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3" />
+                        <path
+                            d="M12 1v4m0 14v4M4.22 4.22l2.83 2.83m9.9 9.9l2.83 2.83M1 12h4m14 0h4M4.22 19.78l2.83-2.83m9.9-9.9l2.83-2.83" />
+                    </svg>
+                </button>
+                <button class="btn-icon" id="themeToggle" title="Đổi giao diện">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-sun">
+                        <circle cx="12" cy="12" r="5" />
+                        <line x1="12" y1="1" x2="12" y2="3" />
+                        <line x1="12" y1="21" x2="12" y2="23" />
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                        <line x1="1" y1="12" x2="3" y2="12" />
+                        <line x1="21" y1="12" x2="23" y2="12" />
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                    </svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-moon">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Workflow Progress -->
+            <div class="workflow-progress">
+                <div class="progress-step active" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Input</div>
+                </div>
+                <div class="progress-line"></div>
+                <div class="progress-step" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Keyword Planner</div>
+                </div>
+                <div class="progress-line"></div>
+                <div class="progress-step" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Content Processor</div>
+                </div>
+            </div>
+
+            <!-- Node Cards Container -->
+            <div class="nodes-container">
+
+                <!-- Node 1: Input -->
+                <section class="node-card active" id="node1">
+                    <div class="node-header">
+                        <div class="node-badge">Node 1</div>
+                        <h2 class="node-title">Nhập Group Key</h2>
+                        <p class="node-desc">Nhập từ khóa chính hoặc import từ file Excel / Google Sheets</p>
+                    </div>
+                    <div class="node-body">
+                        <!-- Input Method Tabs -->
+                        <div class="input-method-tabs">
+                            <button class="method-tab active" data-method="manual">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                </svg>
+                                Nhập thủ công
+                            </button>
+                            <button class="method-tab" data-method="excel">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                    <polyline points="14 2 14 8 20 8" />
+                                    <line x1="16" y1="13" x2="8" y2="13" />
+                                    <line x1="16" y1="17" x2="8" y2="17" />
+                                </svg>
+                                Upload Excel
+                            </button>
+                            <button class="method-tab" data-method="sheets">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                                    <line x1="3" y1="9" x2="21" y2="9" />
+                                    <line x1="3" y1="15" x2="21" y2="15" />
+                                    <line x1="9" y1="3" x2="9" y2="21" />
+                                </svg>
+                                Google Sheets
+                            </button>
+                        </div>
+
+                        <!-- Manual Input Section -->
+                        <div class="input-method-content active" id="manualInput">
+                            <div class="input-group">
+                                <label for="groupKeyInput">Group Key (Từ khóa chính)</label>
+                                <div class="input-wrapper">
+                                    <input type="text" id="groupKeyInput"
+                                        placeholder="VD: Taxi Đắk Lắk, Taxi Buôn Ma Thuột..." autocomplete="off">
+                                    <div class="input-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="11" cy="11" r="8" />
+                                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="recent-keywords" id="recentKeywords">
+                                <span class="recent-label">Gần đây:</span>
+                                <div class="recent-tags" id="recentTags"></div>
+                            </div>
+                        </div>
+
+                        <!-- Excel Upload Section -->
+                        <div class="input-method-content" id="excelInput">
+                            <div class="upload-zone" id="uploadZone">
+                                <div class="upload-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                        <polyline points="17 8 12 3 7 8" />
+                                        <line x1="12" y1="3" x2="12" y2="15" />
+                                    </svg>
+                                </div>
+                                <p class="upload-text">Kéo thả file Excel vào đây</p>
+                                <p class="upload-hint">hoặc click để chọn file (.xlsx, .xls, .csv)</p>
+                                <input type="file" id="excelFileInput" accept=".xlsx,.xls,.csv" hidden>
+                            </div>
+                            <div class="uploaded-file" id="uploadedFile" style="display: none;">
+                                <div class="file-info">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                        <polyline points="14 2 14 8 20 8" />
+                                    </svg>
+                                    <span id="fileName">filename.xlsx</span>
+                                </div>
+                                <button class="btn-icon" id="removeFile" title="Xóa file">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="18" y1="6" x2="6" y2="18" />
+                                        <line x1="6" y1="6" x2="18" y2="18" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="excel-preview" id="excelPreview" style="display: none;">
+                                <label>Chọn cột chứa Group Key:</label>
+                                <select id="columnSelect"></select>
+                                <div class="preview-list" id="previewList"></div>
+                            </div>
+                        </div>
+
+                        <!-- Google Sheets Section -->
+                        <div class="input-method-content" id="sheetsInput">
+                            <div class="input-group">
+                                <label for="sheetsUrl">Link Google Sheets</label>
+                                <div class="input-wrapper">
+                                    <input type="url" id="sheetsUrl"
+                                        placeholder="https://docs.google.com/spreadsheets/d/...">
+                                    <div class="input-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <p class="setting-hint">Đảm bảo sheet được chia sẻ công khai (Anyone with the link)</p>
+                            </div>
+                            <div class="sheets-config">
+                                <div class="input-group half">
+                                    <label for="sheetName">Tên Sheet</label>
+                                    <input type="text" id="sheetName" placeholder="Sheet1" value="Sheet1">
+                                </div>
+                                <div class="input-group half">
+                                    <label for="columnName">Cột chứa Group Key</label>
+                                    <input type="text" id="columnName" placeholder="A" value="A">
+                                </div>
+                            </div>
+                            <button class="btn btn-outline" id="loadSheetsBtn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="23 4 23 10 17 10" />
+                                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                                </svg>
+                                Tải dữ liệu từ Sheets
+                            </button>
+                            <div class="sheets-preview" id="sheetsPreview" style="display: none;">
+                                <div class="preview-list" id="sheetsPreviewList"></div>
+                            </div>
+                        </div>
+
+                        <!-- Loaded Keywords Display -->
+                        <div class="loaded-keywords" id="loadedKeywords" style="display: none;">
+                            <div class="loaded-header">
+                                <span class="loaded-count"><strong id="loadedCount">0</strong> từ khóa đã tải</span>
+                                <button class="btn btn-outline btn-sm" id="clearLoadedBtn">Xóa tất cả</button>
+                            </div>
+                            <div class="loaded-tags" id="loadedTags"></div>
+                        </div>
+
+                        <hr class="divider-line">
+
+                        <!-- Custom Prompt Section -->
+                        <div class="prompt-section">
+                            <div class="prompt-header">
+                                <label for="keywordPrompt">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polygon
+                                            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                    </svg>
+                                    Prompt tạo Keyword (Tùy chỉnh)
+                                </label>
+                                <button class="btn btn-outline btn-sm" id="resetKeywordPromptBtn">Reset mặc
+                                    định</button>
+                            </div>
+                            <textarea id="keywordPrompt" rows="6"
+                                placeholder="Nhập prompt để AI tạo danh sách từ khóa..."></textarea>
+                            <p class="prompt-hint">
+                                <strong>Biến có sẵn:</strong> <code>{{group_key}}</code> - Từ khóa chính,
+                                <code>{{count}}</code> - Số lượng từ khóa
+                            </p>
+                        </div>
+
+                        <div class="options-group">
+                            <label class="checkbox-wrapper">
+                                <input type="checkbox" id="localSeoCheck" checked>
+                                <span class="checkmark"></span>
+                                <span>Tối ưu SEO địa phương (Local SEO)</span>
+                            </label>
+                            <!-- 
+                            <div class="select-group">
+                                <label for="keywordCount">Số lượng từ khóa:</label>
+                                <select id="keywordCount">
+                                    <option value="10">10 từ khóa</option>
+                                    <option value="20" selected>20 từ khóa</option>
+                                    <option value="30">30 từ khóa</option>
+                                </select>
+                            </div>
+                            -->
+                            <input type="hidden" id="keywordCount" value="20">
+                        </div>
+                    </div>
+                    <div class="node-footer">
+                        <div class="footer-info" id="footerInfo">
+                            <span class="info-badge" id="inputModeBadge">Nhập thủ công</span>
+                        </div>
+                        <button class="btn btn-primary btn-lg" id="generateKeywordsBtn">
+                            <span>Tạo Keyword Plan</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                                <polyline points="12 5 19 12 12 19" />
+                            </svg>
+                        </button>
+                    </div>
+                </section>
+
+
+                <!-- Node 2: Keyword Planner -->
+                <section class="node-card" id="node2">
+                    <div class="node-header">
+                        <div class="node-badge">Node 2</div>
+                        <h2 class="node-title">Keyword Planner</h2>
+                        <p class="node-desc">AI đã tạo danh sách từ khóa SEO cho: <strong id="currentGroupKey"></strong>
+                        </p>
+                    </div>
+                    <div class="node-body">
+                        <div class="table-actions">
+                            <div class="table-info">
+                                <span id="keywordCountInfo">0 từ khóa</span>
+                                <span class="divider">|</span>
+                                <label class="checkbox-wrapper small">
+                                    <input type="checkbox" id="selectAllKeywords">
+                                    <span class="checkmark"></span>
+                                    <span>Chọn tất cả</span>
+                                </label>
+                            </div>
+                            <div class="table-btns">
+                                <button class="btn btn-outline btn-sm" id="exportJsonBtn">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                        <polyline points="7 10 12 15 17 10" />
+                                        <line x1="12" y1="15" x2="12" y2="3" />
+                                    </svg>
+                                    Export JSON
+                                </button>
+                                <button class="btn btn-outline btn-sm" id="editTableBtn">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                    </svg>
+                                    Chỉnh sửa
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="table-container">
+                            <table class="keyword-table" id="keywordTable">
+                                <thead>
+                                    <tr>
+                                        <th class="col-check"><input type="checkbox" id="headerCheckAll"></th>
+                                        <th class="col-stt">STT</th>
+                                        <th class="col-keyword">Keywords</th>
+                                        <th class="col-group">Group Key</th>
+                                        <th class="col-prompt">Actions</th>
+                                        <th class="col-intent">Intent</th>
+                                        <th class="col-title">Title</th>
+                                        <th class="col-url">URL</th>
+                                        <th class="col-links">Internal Links</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="keywordTableBody">
+                                    <!-- Dynamic content -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <hr class="divider-line">
+
+                        <!-- Content Prompt Section -->
+                        <div class="prompt-section content-prompt-section">
+                            <div class="prompt-header">
+                                <label for="contentPrompt">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                        <polyline points="14 2 14 8 20 8" />
+                                        <line x1="16" y1="13" x2="8" y2="13" />
+                                        <line x1="16" y1="17" x2="8" y2="17" />
+                                        <polyline points="10 9 9 9 8 9" />
+                                    </svg>
+                                    Prompt Viết Bài (Tùy chỉnh)
+                                </label>
+                                <button class="btn btn-outline btn-sm" id="resetContentPromptBtn">Reset mặc
+                                    định</button>
+                            </div>
+                            <textarea id="contentPrompt" rows="10"
+                                placeholder="Nhập prompt để AI viết bài..."></textarea>
+                            <div class="prompt-hint">
+                                <p><strong>Biến có sẵn từ bảng Keyword:</strong></p>
+                                <div class="variable-tags">
+                                    <code>${keywords}</code> <span>- Từ khóa chính</span>
+                                    <code>${title}</code> <span>- Tiêu đề bài viết</span>
+                                    <code>${intent}</code> <span>- Ý định tìm kiếm</span>
+                                    <code>${url}</code> <span>- URL/Slug</span>
+                                    <code>${internalKey}</code> <span>- Internal Links</span>
+                                    <code>${groupKey}</code> <span>- Chủ đề chính (Group Key)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="node-footer">
+                        <button class="btn btn-secondary" id="backToNode1">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="19" y1="12" x2="5" y2="12" />
+                                <polyline points="12 19 5 12 12 5" />
+                            </svg>
+                            <span>Quay lại</span>
+                        </button>
+                        <button class="btn btn-primary btn-lg" id="processContentBtn">
+                            <span>Xử lý Content</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                                <polyline points="12 5 19 12 12 19" />
+                            </svg>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Node 3: Prompt Processor -->
+                <section class="node-card" id="node3">
+                    <div class="node-header">
+                        <div class="node-badge">Node 3</div>
+                        <h2 class="node-title">Content Processor</h2>
+                        <p class="node-desc">AI đang xử lý nội dung theo mẫu PR1</p>
+                    </div>
+                    <div class="node-body">
+                        <div class="processing-status" id="processingStatus">
+                            <div class="status-header">
+                                <div class="status-icon spinning">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="12" y1="2" x2="12" y2="6" />
+                                        <line x1="12" y1="18" x2="12" y2="22" />
+                                        <line x1="4.93" y1="4.93" x2="7.76" y2="7.76" />
+                                        <line x1="16.24" y1="16.24" x2="19.07" y2="19.07" />
+                                        <line x1="2" y1="12" x2="6" y2="12" />
+                                        <line x1="18" y1="12" x2="22" y2="12" />
+                                        <line x1="4.93" y1="19.07" x2="7.76" y2="16.24" />
+                                        <line x1="16.24" y1="7.76" x2="19.07" y2="4.93" />
+                                    </svg>
+                                </div>
+                                <div class="status-text">
+                                    <span class="status-title">Đang xử lý...</span>
+                                    <span class="status-detail" id="statusDetail">0/0 từ khóa</span>
+                                </div>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progressFill"></div>
+                            </div>
+                        </div>
+
+                        <div class="results-container" id="resultsContainer">
+                            <div class="results-tabs">
+                                <button class="tab-btn active" data-tab="preview">Preview</button>
+                                <button class="tab-btn" data-tab="json">JSON</button>
+                            </div>
+                            <div class="tab-content active" id="previewTab">
+                                <div class="results-list" id="resultsList">
+                                    <!-- Dynamic content -->
+                                </div>
+                            </div>
+                            <div class="tab-content" id="jsonTab">
+                                <pre class="json-preview" id="jsonPreview"></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="node-footer">
+                        <button class="btn btn-secondary" id="backToNode2">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="19" y1="12" x2="5" y2="12" />
+                                <polyline points="12 19 5 12 12 5" />
+                            </svg>
+                            <span>Quay lại</span>
+                        </button>
+                        <div class="export-btns">
+                            <button class="btn btn-outline" id="exportCsvBtn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                    <polyline points="14 2 14 8 20 8" />
+                                    <line x1="16" y1="13" x2="8" y2="13" />
+                                    <line x1="16" y1="17" x2="8" y2="17" />
+                                </svg>
+                                Export CSV
+                            </button>
+                            <button class="btn btn-primary btn-lg" id="exportSheetsBtn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                                    <line x1="3" y1="9" x2="21" y2="9" />
+                                    <line x1="3" y1="15" x2="21" y2="15" />
+                                    <line x1="9" y1="3" x2="9" y2="21" />
+                                    <line x1="15" y1="3" x2="15" y2="21" />
+                                </svg>
+                                <span>Copy to Sheets</span>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+
+        <!-- Settings Modal -->
+        <div class="modal" id="settingsModal">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Cài đặt API</h3>
+                    <button class="btn-icon modal-close" id="closeSettings">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18" />
+                            <line x1="6" y1="6" x2="18" y2="18" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="setting-group">
+                        <label for="apiKeyInput">Google AI API Key (Gemini)</label>
+                        <div class="input-wrapper">
+                            <input type="password" id="apiKeyInput" placeholder="Nhập API Key của bạn...">
+                            <button class="btn-icon toggle-password" id="toggleApiKey">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    class="icon-eye">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                    <circle cx="12" cy="12" r="3" />
+                                </svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    class="icon-eye-off">
+                                    <path
+                                        d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                                    <line x1="1" y1="1" x2="23" y2="23" />
+                                </svg>
+                            </button>
+                        </div>
+                        <p class="setting-hint">
+                            <a href="https://aistudio.google.com/apikey" target="_blank">Lấy API Key tại Google AI
+                                Studio →</a>
+                        </p>
+                    </div>
+
+                    <div class="setting-group">
+                        <label for="modelSelect">AI Model</label>
+                        <select id="modelSelect">
+                            <option value="gemini-2.0-flash">Gemini 3 Flash (Khuyên dùng - Nhanh)</option>
+                            <option value="gemini-1.5-pro">Gemini 3 Pro (Thông minh - Ổn định)</option>
+                            <option value="gemini-1.5-flash">Gemini 1.5 Flash (Tiết kiệm Token)</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-group">
+                        <label for="promptTemplate">Mẫu Prompt PR1 (Content Template)</label>
+                        <textarea id="promptTemplate" rows="8" placeholder="Nhập mẫu prompt của bạn..."></textarea>
+                        <button class="btn btn-outline btn-sm" id="resetPromptBtn">Reset về mặc định</button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="saveSettings">Lưu cài đặt</button>
+                </div>
+            </div>
+        </div>
+        <!-- Blog Preview Modal -->
+        <div class="modal blog-view-modal" id="blogPreviewModal">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content blog-preview-content">
+                <div class="modal-header">
+                    <h3>Xem trước bài viết (Blog View)</h3>
+                    <div class="header-actions">
+                        <button class="btn btn-outline btn-sm" id="copyBlogHtmlBtn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                            Copy HTML
+                        </button>
+                        <button class="btn-icon modal-close" id="closeBlogPreview">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18" />
+                                <line x1="6" y1="6" x2="18" y2="18" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="blog-content-wrapper" id="blogContentPreview">
+                        <!-- Content will be injected here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Google SERP Preview Modal -->
+        <div class="modal serp-view-modal" id="serpPreviewModal">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content serp-preview-content">
+                <div class="modal-header">
+                    <h3>Google SERP Preview</h3>
+                    <div class="header-actions">
+                        <button class="btn-icon modal-close" id="closeSerpPreview">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18" />
+                                <line x1="6" y1="6" x2="18" y2="18" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="serp-editor-container">
+                        <div class="serp-inputs">
+                            <div class="input-group">
+                                <label>SEO Title <span id="serpTitleCount" class="char-count">(0px /
+                                        580px)</span></label>
+                                <input type="text" id="serpTitleInput" placeholder="Enter SEO Title...">
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" id="serpTitleBar"></div>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label>Meta Description <span id="serpDescCount" class="char-count">(0px /
+                                        920px)</span></label>
+                                <textarea id="serpDescInput" rows="3"
+                                    placeholder="Enter Meta Description..."></textarea>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" id="serpDescBar"></div>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label>URL Slug</label>
+                                <input type="text" id="serpUrlInput" placeholder="my-awesome-post">
+                            </div>
+                        </div>
+
+                        <div class="serp-preview-box">
+                            <div class="google-result">
+                                <div class="google-url-row">
+                                    <span class="site-name">Taxi 123 Go</span>
+                                    <span class="url-text">https://taxi123go.vn › <span
+                                            id="serpUrlPreview">bai-viet</span></span>
+                                    <span class="url-menu">⋮</span>
+                                </div>
+                                <h3 class="google-title" id="serpTitlePreview">Tiêu đề bài viết sẽ hiện ở đây</h3>
+                                <div class="google-desc" id="serpDescPreview">
+                                    Mô tả bài viết sẽ hiện ở đây. Google thường hiển thị khoảng 150-160 ký tự. Hãy viết
+                                    mô tả hấp dẫn để tăng tỷ lệ nhấp chuột (CTR).
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEO Audit Modal -->
+        <div class="modal seo-audit-modal" id="seoAuditModal">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content seo-audit-content">
+                <div class="modal-header">
+                    <h3>SEO Audit Report</h3>
+                    <div class="score-badge-large" id="auditScoreBadge">90/100</div>
+                    <button class="btn-icon modal-close" id="closeSeoAudit">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18" />
+                            <line x1="6" y1="6" x2="18" y2="18" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="seo-audit-details" id="seoAuditDetails">
+                        <!-- Dynamic content -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+                <p id="loadingText">Đang xử lý...</p>
+            </div>
+        </div>
+
+        <!-- Toast Notifications -->
+        <div class="toast-container" id="toastContainer"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
